@@ -1,115 +1,72 @@
-export function calculateNetPnl(trades) {
-  return trades.reduce(
-    (total, trade) => total + trade.netPnl,
-    0
-  );
+export function calculateNetPnl(trades = []) {
+  return trades.reduce((total, trade) => total + trade.netPnl, 0);
 }
 
-export function calculateWinRate(trades) {
+export function calculateWinRate(trades = []) {
   if (trades.length === 0) {
     return 0;
   }
 
-  const winningTrades = trades.filter(
-    (trade) => trade.netPnl > 0
-  );
-
-  return (
-    winningTrades.length /
-    trades.length
-  ) * 100;
+  const winningTrades = trades.filter((trade) => trade.netPnl > 0);
+  return (winningTrades.length / trades.length) * 100;
 }
 
 export function calculateBalance(
-    
   startingBalance,
-  trades,
-  withdrawals
+  trades = [],
+  withdrawals = 0
 ) {
-  return (
-    startingBalance +
-    calculateNetPnl(trades)
-    - withdrawals
-  );
+  return startingBalance + calculateNetPnl(trades) - withdrawals;
 }
 
 export function parsePlus500Date(dateString) {
-  const cleaned = dateString.replace(" г.", "");
+  const match = String(dateString ?? "").match(
+    /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s*г\.)?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+  );
 
-  const [datePart, timePart] = cleaned.split(" ");
+  if (!match) {
+    return new Date(Number.NaN);
+  }
 
-  const [day, month, year] = datePart
-    .split(".")
-    .map(Number);
-
-  const [hours, minutes, seconds] = timePart
-    .split(":")
-    .map(Number);
+  const [, day, month, year, hours, minutes, seconds = "0"] = match;
 
   return new Date(
-    year,
-    month - 1,
-    day,
-    hours,
-    minutes,
-    seconds
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hours),
+    Number(minutes),
+    Number(seconds)
   );
 }
 
-export function calculateTradesThisWeek(trades) {
+export function calculateTradesThisWeek(trades = []) {
   const now = new Date();
-
   const startOfWeek = new Date(now);
-
   const day = now.getDay();
+  const difference = day === 0 ? -6 : 1 - day;
 
-  const difference =
-    day === 0 ? -6 : 1 - day;
-
-  startOfWeek.setDate(
-    now.getDate() + difference
-  );
-
+  startOfWeek.setDate(now.getDate() + difference);
   startOfWeek.setHours(0, 0, 0, 0);
 
   return trades.filter((trade) => {
-    const tradeDate =
-      parsePlus500Date(trade.closeTime);
-
-    return (
-      tradeDate >= startOfWeek &&
-      tradeDate <= now
-    );
+    const tradeDate = parsePlus500Date(trade.closeTime);
+    return tradeDate >= startOfWeek && tradeDate <= now;
   }).length;
 }
 
 export function calculateStatistics(
-  trades,
-  startingBalance,
-  withdrawals,
+  trades = [],
+  startingBalance = 0,
+  withdrawals = 0,
   openPositions = []
 ) {
   return {
-    netPnl:
-      calculateNetPnl(trades),
-
-    winRate:
-      calculateWinRate(trades),
-
-    balance:
-      calculateBalance(
-        startingBalance,
-        trades,
-        withdrawals
-      ),
-
-    withdrawals:
-      withdrawals,
-
-    tradesThisWeek:
-      calculateTradesThisWeek(trades),
-
-    openPositions:
-      openPositions.length
+    netPnl: calculateNetPnl(trades),
+    winRate: calculateWinRate(trades),
+    balance: calculateBalance(startingBalance, trades, withdrawals),
+    withdrawals,
+    tradesThisWeek: calculateTradesThisWeek(trades),
+    openPositions: openPositions.length,
   };
 }

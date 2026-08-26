@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./App.css";
-import Stats from "./pages/stats.jsx";
-import ImportTrades from "./pages/importTrades.jsx";
+import Stats from "./features/stats.jsx";
+import ImportTrades from "./features/importTrades.jsx";
+import Calendar from "./features/calendar/calendar.jsx";
 
 function App() {
   const [trades, setTrades] = useState([]);
@@ -10,6 +11,7 @@ function App() {
     <>
       <ImportTrades onTradesImported={setTrades} />
       <Stats trades={trades} />
+      <Calendar trades={trades} />
     </>
   );
 }

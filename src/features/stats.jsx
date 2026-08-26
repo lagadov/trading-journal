@@ -4,7 +4,7 @@ import upArrow from "../assets/up-arrow.png";
 import downArrow from "../assets/down-arrow.png";
 import {
   calculateStatistics
-} from "../utils/tradeStatistics";
+} from "../utils/tradeStatistics.js";
 
 
 function Stats({ trades }) {
