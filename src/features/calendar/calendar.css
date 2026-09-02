@@ -1,7 +1,7 @@
 .calendar {
   width: calc(100% - 48px);
   box-sizing: border-box;
-  margin: 0 24px 24px;
+  margin: 0 24px 200px 24px;
   padding: 20px;
   color: #f5f7fb;
   background: #20232a;
@@ -101,3 +101,5 @@
     display: none;
   }
 }
+
+

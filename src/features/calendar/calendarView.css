@@ -38,16 +38,16 @@
   background: #24262d;
   scale: 1.02;
   transition: background 0.3s ease, scale 0.3s ease;
-  box-shadow: 0 0 10px rgba(74, 78, 121, 0.456);
+  box-shadow: 0 0 10px rgba(80, 83, 106, 0.593);
 }
 
-.calendar-day.empty {
+.calendar-day.outside-month {
   background: #1c1f26;
 }
-.calendar-day.empty:hover {
+
+.calendar-day.outside-month:hover {
   background: #1c1f26;
-  scale: 1;
-  box-shadow: none;
+  box-shadow: 0 0 10px rgba(75, 76, 97, 0.456);
 }
 
 .calendar-day.today {

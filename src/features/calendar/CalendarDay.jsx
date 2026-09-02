@@ -1,6 +1,6 @@
 
 
-function CalendarDay({ date, summary }) {
+function CalendarDay({ date, summary, isOutsideMonth }) {
   if (!date) {
     return <div className="calendar-day empty" aria-hidden="true" />;
   }
@@ -12,7 +12,7 @@ function CalendarDay({ date, summary }) {
     date.getDate() === today.getDate();
 
   return (
-    <article className={`calendar-day${isToday ? " today" : ""}`}>
+    <article className={`calendar-day${isToday ? " today" : ""}  ${isOutsideMonth ? "outside-month" : ""}`}>
       <div className="calendar-day-header">
         <span className="calendar-day-number">{date.getDate()}</span>
         {isToday && <span className="calendar-today-label">Today</span>}

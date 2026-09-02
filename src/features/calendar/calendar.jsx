@@ -62,6 +62,7 @@ function Calendar({ trades = [] }) {
       <CalendarView year={year} month={month} trades={trades} />
     </section>
   );
+  <div className="space"></div>
 }
 
 export default Calendar;

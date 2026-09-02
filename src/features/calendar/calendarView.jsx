@@ -47,11 +47,15 @@ function CalendarView({ year, month, trades = [] }) {
         ))}
 
         {days.map((date, index) => (
-          <CalendarDay
-            key={date ? getDateKey(date) : `empty-${index}`}
+        <CalendarDay
+            key={getDateKey(date)}
             date={date}
-            summary={date ? tradeSummaryByDay[getDateKey(date)] : undefined}
-          />
+            summary={tradeSummaryByDay[getDateKey(date)]}
+            isOutsideMonth={
+            date.getMonth() !== month ||
+            date.getFullYear() !== year
+        }
+        />
         ))}
       </div>
     </div>

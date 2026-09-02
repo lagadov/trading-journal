@@ -1,34 +1,25 @@
 export function getCalendarDays(year, month) {
   const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfMonth = new Date(year, month + 1, 0);
 
-  const daysInMonth = lastDayOfMonth.getDate();
-
-  // JS: Sunday = 0, Monday = 1...
-  // We want Monday = 0
+  // Converts Sunday-first into Monday-first.
   const startingDay =
     (firstDayOfMonth.getDay() + 6) % 7;
 
-  const days = [];
+  const daysInMonth =
+    new Date(year, month + 1, 0).getDate();
 
-  // Empty cells before the first day
-  for (let i = 0; i < startingDay; i++) {
-    days.push(null);
-  }
+  const numberOfCells =
+    Math.ceil((startingDay + daysInMonth) / 7) * 7;
 
-  // Actual days
-  for (let day = 1; day <= daysInMonth; day++) {
-    days.push(
-      new Date(year, month, day)
-    );
-  }
-
-  // Complete the last week so every row has seven cells.
-  while (days.length % 7 !== 0) {
-    days.push(null);
-  }
-
-  return days;
+  return Array.from(
+    { length: numberOfCells },
+    (_, index) =>
+      new Date(
+        year,
+        month,
+        index - startingDay + 1
+      )
+  );
 }
 
 export function getDateKey(date) {

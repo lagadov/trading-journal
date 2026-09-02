@@ -1,0 +1,34 @@
+.lists-page{
+  height: 700px;
+  width: calc(100% - 48px);
+  box-sizing: border-box;
+  margin: 0 24px 200px 24px;
+  padding: 15px;
+  color: #f5f7fb;
+  background: #20232a;
+  border: 1px solid #383c46;
+  border-radius: 12px;
+}
+
+.lists-container{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    padding: 15px;
+    gap: 20px;
+}
+.lists-container div{
+    width: 50%;
+}
+
+.list-opened{
+    
+}
+
+.list-closed{
+
+}
+
+.position{
+
+}
