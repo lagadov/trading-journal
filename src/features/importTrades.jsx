@@ -1,13 +1,24 @@
 import "./importTrades.css";
+import { useRef, useState } from "react";
 import Papa from "papaparse";
 import { normalizePlus500Trades } from "../utils/plus500Parser.js";
 import { parsePlus500Date } from "../utils/tradeStatistics.js";
 
-function ImportTrades({ onTradesImported }) {
+function ImportTrades({ onTradesImported, compact = false }) {
+  const inputRef = useRef(null);
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [importing, setImporting] = useState(false);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
     if (!file) return;
+    // Allow selecting the same CSV again, including after a failed import.
+    event.target.value = "";
+    setStatus("");
+    setError("");
+    setImporting(true);
 
     Papa.parse(file, {
       header: true,
@@ -16,11 +27,13 @@ function ImportTrades({ onTradesImported }) {
         header.replace(/^\uFEFF/, "").trim(),
 
       complete: (results) => {
+        setImporting(false);
         if (results.errors.length > 0) {
-          console.error("CSV errors:", results.errors);
+          setError("Could not read this CSV. Check the file and try again.");
           return;
         }
 
+        try {
         const normalizedTrades =
           normalizePlus500Trades(results.data);
 
@@ -40,19 +53,38 @@ function ImportTrades({ onTradesImported }) {
         );
 
         onTradesImported(sortedTrades);
+        setStatus(`Imported ${sortedTrades.length} ${sortedTrades.length === 1 ? "trade" : "trades"}.`);
+        } catch {
+          setError("Could not import these trades. Check that this is a Plus500 trades CSV.");
+        }
+      },
+      error: () => {
+        setImporting(false);
+        setError("Could not open this file. Please try again.");
       },
     });
   };
 
   return (
-    <div className="container">
-      <h2>Import trades</h2>
+    <div className={compact ? "import-trades-compact" : "container"}>
+      {compact ? (
+        <button className="import-trades-button" type="button" disabled={importing}
+          onClick={() => inputRef.current?.click()}>
+          {importing ? "Importing…" : "Import trades"}
+        </button>
+      ) : <h2>Import trades</h2>}
 
       <input
+        ref={inputRef}
         type="file"
         accept=".csv,text/csv"
+        aria-label="Import trades CSV"
+        hidden={compact}
+        disabled={importing}
         onChange={handleFileChange}
       />
+      {status && <p className="import-trades-status" role="status">{status}</p>}
+      {error && <p className="import-trades-error" role="alert">{error}</p>}
     </div>
   );
 }

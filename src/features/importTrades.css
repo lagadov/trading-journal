@@ -38,3 +38,39 @@ input{
     background: #1e1d31;
     border: 1px solid #2f3651;
 }
+
+.import-trades-compact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.import-trades-button {
+  padding: 10px 16px;
+  min-height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: #85d4ca;
+  color: #112d2b;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.import-trades-button:hover { background: #73c9bd; }
+.import-trades-button:focus-visible { outline: 2px solid #a0e3db; outline-offset: 3px; }
+.import-trades-button:disabled { opacity: 0.6; cursor: wait; }
+
+.import-trades-status,
+.import-trades-error {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.import-trades-status { color: #aebdcd; }
+.import-trades-error { color: #ffaaaa; }

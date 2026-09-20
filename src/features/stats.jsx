@@ -7,10 +7,10 @@ import {
 } from "../utils/tradeStatistics.js";
 
 
-function Stats({ trades }) {
+function Stats({ trades, openPositionRecords = [] }) {
   console.log(trades);
   
-  const { netPnl, winRate, tradesThisWeek, balance, withdrawals, openPositions} = calculateStatistics(trades, 2125.08, 100);
+  const { netPnl, winRate, tradesThisWeek, balance, withdrawals, openPositions} = calculateStatistics(trades, 2125.08, 100, openPositionRecords);
   const isProfit = netPnl >= 0;
 
     return (
@@ -23,11 +23,7 @@ function Stats({ trades }) {
                 className={`net-pl ${isProfit ? "profit" : "loss"}`}
               >
                 {isProfit}€{Math.abs(netPnl).toFixed(2)}
-                <img
-                  className="pnl-arrow"
-                  src={isProfit ? upArrow : downArrow}
-                  alt={isProfit ? "Up Arrow" : "Down Arrow"}
-                />
+               
               </h1>
             </div>
 

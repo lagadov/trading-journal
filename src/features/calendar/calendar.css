@@ -77,11 +77,11 @@
 }
 
 .calendar .profit {
-  color: #22c55e;
+  color: #5ad888;
 }
 
 .calendar .loss {
-  color: #ef4444;
+  color: #e6757c;
 }
 
 @media (max-width: 760px) {

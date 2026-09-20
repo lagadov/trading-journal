@@ -28,8 +28,8 @@
   width: 16%;
   padding: 16px;
   background: #20232a;
-  border: 1px solid #383c46;
-  border-radius: 12px;
+  border-left: 3px solid #36fd72;
+  border-radius: 5px;
 }
 
 .stats-container h3{
@@ -110,7 +110,7 @@
 }
 
 .net-pl.profit {
-  color: #22c55e;
+  color: #40ed7f;
 }
 
 .net-pl.loss {
